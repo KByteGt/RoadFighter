@@ -1,0 +1,124 @@
+;Modo video
+
+;13h Matriz de 320x200 pixeles - 256 colores
+
+;Cronometro MASM
+;===================
+
+;===================
+org 100h
+section .text
+
+inicio:
+	; Iniciar el modo video
+	mov al, 13h
+	xor ah, ah
+	int 10h
+
+	;Reistro de dato extra apuntar al inicio de la matriz
+	;Posicionar directamente a la memoria de video
+	mov ax, 0A00h 	;Posición de la primera celda
+	mov es, ax
+	xor di, di
+
+;Pintar pantalla a cada tiempo
+mainLoop:
+	mov bl, 0		; Definir el color de fonde de pantalla 0 = Negro
+
+	call cleanScreen	;Sub-rutina para limpiar la pantalla
+
+	;Cronometro
+	Tiempo:
+		mov ax, [microsegundos]
+		inc ax
+		cmp ax, 60
+		je masSeg
+		mov [microsegundos], ax
+		jmp imprimirTiempo
+
+		masSeg:
+			mov ax, [segundos]
+			inc ax
+			cmp ax, 60
+			je masMin
+			mov ax, 0
+			mov [microsegundos], ax
+			jmp imprimirTiempo
+
+		masMin:
+			mov ax, [minutos]
+			inc ax
+			mov [minutos], ax
+
+			mov ax, 0
+			mov [segundos]. ax
+			mov [microsegundos], ax
+
+		imprimirTiempo:
+			; Macro (var), (pos)
+			DivNumeros minutos, 1Eh ; Imprimir número en pantalla y posición
+			DivNumeros segundos, 21h
+			DivNumeros microsegundos, 24h
+
+		; DELAY
+
+		mov ax, 0000h		;tiempo del delay
+		mov dx, 0fffh		;tiempo del delay
+
+		call delay
+
+		; Lectura de teclado
+		call hasKey
+		jz mainLoop
+
+		cmp al, 'b'
+		je finProg
+		jmp mainLoop
+
+		finProg:
+			mov ax, 3h 	; Modo texto
+			int 10h
+
+			mov ax, 4c00h
+			int 21h
+
+;===================
+;Limpiar la pantalla y pintar de negro, por completo
+;Procedimiento directo a la memoria de video
+clearScreen:
+	mov ax, ds		; Apuntar a donde estan los datos
+	mov es, ax		; Guardar la dirección base de datos
+
+	mov di, buffer
+
+	; bl = 0
+	mov al, bl		; al = 0
+	mov ah, bl		; ah = 0
+
+	; shl - corrimiento de registros
+	shl eax, 16
+	mov al, bl
+	mov ah, bl
+
+	mov cx, 16000
+	rep stod 	; Ciclo "stro string double word" repetir 16000
+
+	ret
+
+; Delay
+; Función 86h, interrupción 15h
+; Esta función recibe un numero de 32 bits, pero en dos partes
+; cx , dx > cx la parte alta
+delay:
+
+ret
+
+;===================
+section .data
+
+	;doble buffer
+	buffer resb 64000
+
+	microsegundos 	dw 0
+	segundos		dw 0
+	minutos			dw 0
