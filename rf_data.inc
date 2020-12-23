@@ -45,8 +45,8 @@ menu_admin      db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10
 				db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10
 				db	' |%%%|                          |%%%|',13,10
 				db	' |%%%| 1- TOP 10 PUNTOS         |%%%|',13,10
-				db	' |%%%| 2- TOP 10 TIEMPOs       |%%%|',13,10
-				db	' |%%%| 3- SALIR                |%%%|',13,10
+				db	' |%%%| 2- TOP 10 TIEMPOs        |%%%|',13,10
+				db	' |%%%| 3- SALIR                 |%%%|',13,10
 				db	' |%%%|                          |%%%|',13,10
 				db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10
 				db	' | > presione un numero: $'
@@ -63,10 +63,12 @@ CRLF        db  10,13,'$'
 
 txt_exit        db  10,13,' Vamos por el 100!!!',10,13,'$'
 txt_inUser      db  ' |> Ingresar nombre de usuario (7 max char): $'
-txt_inPass      db  ' |> Ingresar contrasena (4 digit max): $'
+txt_inPass      db  ' |> Ingresar contrasena (4 max digit): $'
 
 msg_log01 db  ' |> **ERROR: ya existe el usuario $',13,10
-msg_log02 db  ' | * Usuario o contraseña incorrectas',13,10,'$'
+msg_log02 db  ' | * Usuario o contrasena incorrectas',13,10,'$'
+msg_log03 db  ' | ** ERROR: No se aceptan usuarios sin nombre',13,10,'$'
+
 
 
 

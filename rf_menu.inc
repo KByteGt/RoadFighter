@@ -31,32 +31,38 @@ SINGUP proc
     ;Leer cadena, (nombre de usuario)
     _ReadString inUser
 
-    ; Limpiamos variable (inPass)
-    _ClrBuffer inPass
-    ; Imprimir txto
-    _PrintF txt_inPass
-    ; Leer cadena, (Contraseña de usuario)
-    _ReadString inPass
+    ;Verificar tamaño del username
+    _Lengt inUser
+    cmp ax, 7h
+    ;jbe validarPassword            ; esta dentro del rango 1-7
+    jg singup_end                   ; es mayor
+    ;Validar usuario ingresado
 
-    ; Buscar usuario
-    call SEARCH_USER
+    call VALIDATE_USER
     ; AL = status de la busqueda
     ; 00h - No existe
-    ; 01h - Admin
-    ; 02h - Usuario normal
+    ; 01h - Existe
 
     cmp al, 00h
-    je singup_error
+    je validarPassword
     cmp al, 01h
-    je singup_admin
-    cmp al, 02h
-    je Singup_user
+    je singup_end
+
+    validarPassword:
+        _ClrBuffer inPass
+        _ReadString inPass
+        _Lengt inPass
+        cmp ax, 4h
+        jg validarPassword        ; Insertar contraseña correcta
+        ;Validar que sean solo números
+
+        ;Registrar usuario
+
+        jmp singup_end
 
     singup_error:
-
-    singup_admin:
-
-    Singup_user:
+        _PrintF msg_log01
+        _ReadChar
 
     singup_end:
         ret
@@ -92,27 +98,27 @@ LOGIN proc
         ; 02h - Usuario normal
 
         cmp al, 00h
-        je singup_error
+        je login_error
         cmp al, 01h
-        je singup_admin
+        je login_admin
         cmp al, 02h
-        je Singup_user
+        je login_user
 
-    singup_error:
+    login_error:
         _PrintF msg_log02       ; Mostrar msg_log02 (Usuario o contraseña incorrectas)
         _ReadChar               ; Esperar lectura en teclado
 
         jmp login_menu          ; Mostrar LOGIN
 
-    singup_admin:
+    login_admin:
         call SESSION_ADMIN
-        jmp singup_end
+        jmp login_end
 
-    Singup_user:
+    login_user:
         call SESSION_USER
-        jmp singup_end
+        jmp login_end
 
-    singup_end:
+    login_end:
         ret
 
 LOGIN endp
@@ -403,6 +409,117 @@ SEARCH_USER proc
 
 SEARCH_USER endp
 
+;==> Valida que no exista el usuario a crear
+;   variable a usar (inUSer)
+;   salida: AL = status
+;   se almacena el usuario en (userName)
+VALIDATE_USER proc
+    cmp inUser[0], '$'
+    je user_error
+
+    ;Comparar cadena con ADMIN
+    _CMPString userAdmin, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist       ; Es admin, validar password
+
+    ;Comparar cadena con User1
+    _CMPString user1, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User2
+    _CMPString user2, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User3
+    _CMPString user3, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User4
+    _CMPString user4, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User5
+    _CMPString user5, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User6
+    _CMPString user6, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User7
+    _CMPString user7, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User8
+    _CMPString user8, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User9
+    _CMPString user9, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User10
+    _CMPString user10, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User11
+    _CMPString user11, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User12
+    _CMPString user12, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User13
+    _CMPString user13, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User14
+    _CMPString user14, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User15
+    _CMPString user15, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User16
+    _CMPString user16, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User17
+    _CMPString user17, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User18
+    _CMPString user18, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User19
+    _CMPString user19, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    ;Comparar cadena con User20
+    _CMPString user20, inUser, flagCMP
+    cmp flagCMP, 1h
+    jz user_exist
+    jnz user_notExist
+
+    user_exist:
+        mov al, 01h
+        jmp vUser_end
+
+    user_notExist:
+        mov al, 00h
+        jmp vUser_end
+
+    user_error:
+        _PrintF msg_log03
+        mov al, 01h
+
+    vUser_end:
+        ret
+VALIDATE_USER endp
+
 ;==> MENU DE USUARIO
 SESSION_USER proc
     user_menu:
@@ -421,12 +538,12 @@ SESSION_USER proc
     user_game:
         ;Iniciar Juego Road Figther
 
-        jmp admin_menu
+        jmp user_menu
 
     user_upload:
         ;Cargar archivos de juego
 
-        jmp admin_menu
+        jmp user_menu
 
     user_end:
         ret

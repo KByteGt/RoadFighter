@@ -89,6 +89,7 @@ ENDM
 ; Comparar dos cadenas
 ; Entrada: cadena1, cadena2, flag
 ; Salida: nada, solo modifica el valor de flag
+; TRUE = cadenas iguales, FALSE = cadenas distintas
 _CMPString MACRO buffer1, buffer2, flag
     local for, same, diferent, end
 
@@ -163,6 +164,18 @@ _CopyString MACRO entrada, buffer
     ;pop di 
     pop si
     
+ENDM
+
+; Validar tamaño de cadena
+; Entrada: cadena
+; Salida: AX = tamaño
+_Lengt MACRO buffer
+    push cx 
+
+    mov cx, SIZEOF buffer
+    mov ax, cx
+
+    pop cx
 ENDM
 
 
