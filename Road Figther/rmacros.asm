@@ -320,7 +320,7 @@ mIniciarJuego macro
 endm
 
 mCargarJuego macro 
-	call cargarJuego
+	call cargarJuego ;rf_log2.inc
 endm
 
 ;============================= CONTROL DE FICHEROS ============================

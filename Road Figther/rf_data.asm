@@ -53,18 +53,18 @@ menuAdmin       db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10
 				db	' | > presione un numero: $'
 
 ;================ MENSAJES PARA LA APLICACION =====================
-msjRegUser      db '| > Ingresar nombre de usuario (7 max char): ','$' ;registrar usuario
-msjRegContra    db '| > Ingresar contrasena (4 max digit): ','$'	;registrar contraseña
-msjU db ' | > Usuario: ','$'
-msjC db ' | > Contrasena: ','$'
+msjRegUser      db ' | > Ingresar nombre de usuario (7 max char): ','$' ;registrar usuario
+msjRegContra    db ' | > Ingresar contrasena (4 max digit): ','$'	;registrar contraseña
+msjU            db ' | > Usuario: ','$'
+msjC            db ' | > Contrasena: ','$'
 
 ;=============== VARIABLES PARA GUARDAR USUARIOS ==================
 entradaU db 7 dup('$'),'$'	;Entrada para el usuario
 entradaC db 4 dup('$'),'$'	;Entrada para la contraseña
 userAdmin db 'admin','$' 	;Nombre del usuario administrador
 contraAdmin db '1234','$'	;contraseña del usuario administrador
-usuario1 db 7 dup('$'),'$'	;Usuario #1
-contra1 db 4 dup('$'),'$' 	
+usuario1 db 'kbgt$$$','$'	;Usuario #1
+contra1 db '1234','$' 	
 usuario2 db 7 dup('$'),'$'	;Usuario #2
 contra2 db 4 dup('$'),'$' 	
 usuario3 db 7 dup('$'),'$'	;Usuario #3
@@ -200,21 +200,38 @@ obs2Listo dw 0d
 obs3Listo dw 0d
 obs4Listo dw 0d
 
-;======================= MEMORIA PARA EL TIEMPO SEGUN NIVELES ====================
+;=============================================
+;         CONFIGURACÓN NIVELES JUEGO
+;=============================================
+
+puntajeJuego    dw 3d 	;variable que llevara el puntaje durante el juego en memoria
+                        ;Para todos los niveles
+PuntosPremios   dw 0d 	;punteo para sumar por colisionar con un premio NOTA: ASIGNARLE VALOR al cambiar de NIVEL. variable en aumentoPuntos y disminuyoPuntos
+PuntosObs       dw 0d 	;punteo para restar por colisonar con un obstaculo NOTA: ASIGNARLE VALOR al cambiar de NIVEL
+
 ;--------------------- PARA NIVEL 1 ------------------------------
-TiempoNivel1 dw 0d 		;Determina la duracion del nivel(seg)
-tiempo1Premio db 0d 	;Tiempo del nivel 1 para que salga cada premio						
-tiempo1Obs db 0d	;Tiempo del nivel 1 para cada obstaculo
+nombreNivel1    db '0','$'
+TiempoNivel1    dw 0d 	;Determina la duracion del nivel(seg)
+tiempo1Premio   db 0d 	;Tiempo del nivel 1 para que salga cada premio						
+tiempo1Obs      db 0d	;Tiempo del nivel 1 para cada obstaculo
+puntosPremiosN1 dw 0d
+puntosObsN1     dw 0d
 
 ;--------------------- PARA NIVEL 2 ------------------------------
-TiempoNivel2 dw 0d
-tiempo2Premio db 0d
-tiempo2Obs db 0d
+nombreNivel2    db '0','$'
+TiempoNivel2    dw 0d
+tiempo2Premio   db 0d
+tiempo2Obs      db 0d
+puntosPremiosN2 dw 0d
+puntosObsN2     dw 0d
 
 ;--------------------- PARA NIVEL 3 ------------------------------
-TiempoNivel3 dw 0d
-tiempo3Premio db 0d
-tiempo3Obs db 0d
+nombreNivel3    db '0','$'
+TiempoNivel3    dw 0d
+tiempo3Premio   db 0d
+tiempo3Obs      db 0d
+puntosPremiosN3 dw 0d
+puntosObsN3     dw 0d
 
 
 ;--------------------- PARA NIVEL 4 ------------------------------
@@ -232,25 +249,6 @@ tiempo5Obs db 0d
 TiempoNivel6 dw 0d
 tiempo6Premio db 0d
 tiempo6Obs db 0d
-
-
-;==================== MEMORIA PARA EL PUNTAJE SEGUN NIVELES ======================
-puntajeJuego dw 3d 	;variable que llevara el puntaje durante el juego en memoria
-;Para todos los niveles
-PuntosPremios dw 0d 	;punteo para sumar por colisionar con un premio NOTA: ASIGNARLE VALOR al cambiar de NIVEL. variable en aumentoPuntos y disminuyoPuntos
-PuntosObs dw 0d 		;punteo para restar por colisonar con un obstaculo NOTA: ASIGNARLE VALOR al cambiar de NIVEL
-
-;--------------------- PARA NIVEL 1 ------------------------------
-puntosPremiosN1 dw 0d
-puntosObsN1 dw 0d
-
-;--------------------- PARA NIVEL 2 ------------------------------
-puntosPremiosN2 dw 0d
-puntosObsN2 dw 0d
-
-;--------------------- PARA NIVEL 3 ------------------------------
-puntosPremiosN3 dw 0d
-puntosObsN3 dw 0d
 
 ;--------------------- PARA NIVEL 4 ------------------------------
 puntosPremiosN4 dw 0d
@@ -282,10 +280,10 @@ carrocl6 db 4d
 juegoCargado db 0d; indica si hay un juego cargado en la aplicacion 0/1 = no/si
 
 ;==================== PARA EL ARCHIVO DE ENTRADA =============================
-handlerentrada dw ? ;no se le asigna un valor todavia
-bufferentrada db 50 dup('$') ;cadena para guardar la ruta del archivo de entrada
-bufferInformacion db 220 dup('$') ;variable para guardar la informacion que leeremos del archivo de entrada
-bufferaux db 10 dup('$') ;cadena auxiliar para guardar la informacion de entrada temporalmente
+handlerentrada      dw ? ;no se le asigna un valor todavia
+bufferentrada       db 50 dup('$') ;cadena para guardar la ruta del archivo de entrada
+bufferInformacion   db 220 dup('$') ;variable para guardar la informacion que leeremos del archivo de entrada
+bufferaux           db 10 dup('$') ;cadena auxiliar para guardar la informacion de entrada temporalmente
 cadrojo db 'rojo','$'
 cadazul db 'azul','$'
 cadverde db 'verde','$'

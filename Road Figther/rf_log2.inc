@@ -329,7 +329,9 @@ copiarInformacion proc
 	;di = buffer
 	;si = posicion del caracter a copiar
 	INICIOCI:
-		cmp bufferInformacion[si],';'
+		cmp bufferInformacion[si],','
+		je FIN
+		cmp bufferInformacion[si], 59d  ; ";"
 		je FIN
 		;Guardo caracter por caracter mov buffer,entrada
 		mov bl, bufferInformacion[si]
@@ -707,7 +709,8 @@ SesionUsuario proc
 				leerChar
 			jmp MenuUsuario
 		Cargar:
-			mCargarJuego
+			;mCargarJuego
+			call cargarJuego
 			jmp MenuUsuario
 		SalirMU:
 			ret
@@ -728,434 +731,205 @@ cargarJuego proc
 	CARGA:
 		limpiarCadena bufferentrada, SIZEOF bufferentrada, 24h; limpia la cadena con caracteres de dolar
 		_Print saltoln
-		mWrite<'Ingrese la ruta del archivo de entrada:'>
+		mWrite<' | > Ingrese la ruta del archivo de entrada:'>
 		_Print saltoln
 		leerRuta bufferentrada
 		abrirFichero bufferentrada, handlerentrada
 		cmp siabrio, 0d
 		je CARGA
+
+		mWrite<' | - Archivo abierto.'>
 		limpiarCadena bufferInformacion, SIZEOF bufferInformacion, 24h
 		leerFichero handlerentrada, bufferInformacion, SIZEOF bufferInformacion ;numero de bytes maximo a leer
 		cerrarFichero handlerentrada
-		call almacenarConfiguracion
-		mWrite<'Archivo de entrada cargado exitosamente.'>
+		mWrite<' ..'>
+		_Print saltoln
+		_Print bufferInformacion
+		;call almacenarConfiguracion
+		call ConfiguracionNiveles
+		_Print saltoln
+		mWrite<' | - Archivo de entrada cargado exitosamente.'>
 		mov juegoCargado, 1d
 		leerChar
 		ret
 
 cargarJuego endp
 
+;=======================================================================================
+; Lee el archivo y almacena la configuración para los 
+; 3 niveles únicos, delimitado por "," y fin de línea ";"
+; NIVEL,nivel,TiempoNivel,TiempoObstaculos,TiempoPremio,PuntosObstaculos,PuntosPremios;
+;=======================================================================================
+ConfiguracionNiveles proc 
+	push si 
 
-almacenarConfiguracion proc
-	xor si,si
-	PARALEVEL1:
-		Nivel1:
-			cmp bufferInformacion[si],';'
-			je NUMNIVEL1
+	xor si, si 
+	; La información se almacena en: bufferInformacion[]
+	FORLEVEL1:
+		L_1:
+			cmp bufferInformacion[si], ',' ; Compara con ","
+			je LEVEL_1
+			inc si 
+			jmp L_1
+
+		; Configuración nivel 1
+		LEVEL_1: 					
+			; Obtener el número del nivel
+			inc si 
+			mov al, bufferInformacion[si]
+			mov nombreNivel1[0], al 
 			inc si
-			jmp Nivel1
-		NUMNIVEL1:
 			inc si
-			cmp bufferInformacion[si],';'
-			je TN1
-			jmp NUMNIVEL1
-		TN1: ;Tiempo nivel 1
-			inc si
+			; Obtener tiempo de nivel
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov TiempoNivel1, ax
-		TOBS1: ;me lo dejo en el punto y coma
+
 			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
 			inc si
+			; Obtener tiempo obstaculos
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov tiempo1Obs, al
-		TPREM1:
+
 			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
 			inc si
+			; Obtener tiempo premio
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov tiempo1Premio, al
-		PTOBS1:
+
 			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
 			inc si
+			; Obtener puntos obstaculos
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov puntosObsN1, ax
-		PTPREM1:
+
 			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
 			inc si
+			; Obtener puntos premio
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov puntosPremiosN1, ax
-		CLCARRO1:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
+
+			cmp bufferInformacion[si], 59d ;Fin de linea 3Bh = 59d = ;
+			je L_2
+			jne LEVEL_END
+
+
+		L_2:
+			cmp bufferInformacion[si], ',' ; Compara con ","
+			je LEVEL_2
+			inc si 
+			jmp L_2
+
+		LEVEL_2:
+			; Configuración nivel 2
+			; Obtener el número del nivel
+			inc si 
+			mov al, bufferInformacion[si]
+			mov nombreNivel2[0], al 
 			inc si
-			mCopiarPersonaje bufferaux
-			compararCadena bufferaux, cadrojo
-			je CLROJO1
-			compararCadena bufferaux, cadverde
-			je CLVERDE1
-			compararCadena bufferaux, cadazul
-			je CLAZUL1
-			compararCadena bufferaux, cadblanco
-			je CLBLANCO1
-			CLROJO1:
-				mov carrocl1, 4d
-				jmp PARALEVEL2
-			CLVERDE1:
-				mov carrocl1, 2d
-				jmp PARALEVEL2
-			CLAZUL1:
-				mov carrocl1, 1d
-				jmp PARALEVEL2
-			CLBLANCO1:
-				mov carrocl1, 15d
-	PARALEVEL2:
-		inc si ;nueva linea = caracter 10
-		inc si ;posible dolar o siguiente nivel
-		cmp bufferInformacion[si],'$' ;si no hay nivel 2
-		je FIN
-		limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-		Nivel2:
-			cmp bufferInformacion[si],';'
-			je NUMNIVEL2
 			inc si
-			jmp Nivel2
-		NUMNIVEL2:
-			inc si
-			cmp bufferInformacion[si],';'
-			je TN2
-			jmp NUMNIVEL2
-		TN2:
-			inc si
+			; Obtener tiempo de nivel
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov TiempoNivel2, ax
-		TOBS2: ;me lo dejo en el punto y coma
+
 			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
 			inc si
+			; Obtener tiempo obstaculos
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov tiempo2Obs, al
-		TPREM2:
+
 			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
 			inc si
+			; Obtener tiempo premio
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov tiempo2Premio, al
-		PTOBS2:
+
 			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
 			inc si
+			; Obtener puntos obstaculos
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov puntosObsN2, ax
-		PTPREM2:
+
 			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
 			inc si
+			; Obtener puntos premio
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov puntosPremiosN2, ax
-		CLCARRO2:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
+
+			cmp bufferInformacion[si], 59d ;Fin de linea 3Bh = 59d = ;
+			je L_3
+			jne LEVEL_END
+
+		L_3:
+			cmp bufferInformacion[si], ',' ; Compara con ","
+			je LEVEL_3
+			inc si 
+			jmp L_3
+
+		LEVEL_3:
+			; Configuración nivel 2
+			; Obtener el número del nivel
+			inc si 
+			mov al, bufferInformacion[si]
+			mov nombreNivel3[0], al 
 			inc si
-			mCopiarPersonaje bufferaux
-			compararCadena bufferaux, cadrojo
-			je CLROJO2
-			compararCadena bufferaux, cadverde
-			je CLVERDE2
-			compararCadena bufferaux, cadazul
-			je CLAZUL2
-			compararCadena bufferaux, cadblanco
-			je CLBLANCO2
-			CLROJO2:
-				mov carrocl2, 4d
-				jmp PARALEVEL3
-			CLVERDE2:
-				mov carrocl2, 2d
-				jmp PARALEVEL3
-			CLAZUL2:
-				mov carrocl2, 1d
-				jmp PARALEVEL3
-			CLBLANCO2:
-				mov carrocl2, 15d
-	PARALEVEL3:
-		inc si ;nueva linea = caracter 10
-		inc si ;posible dolar o siguiente nivel
-		cmp bufferInformacion[si],'$' ;si no hay nivel 2
-		je FIN
-		limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-		Nivel3:
-			cmp bufferInformacion[si],';'
-			je NUMNIVEL3
 			inc si
-			jmp Nivel3
-		NUMNIVEL3:
-			inc si
-			cmp bufferInformacion[si],';'
-			je TN3
-			jmp NUMNIVEL3
-		TN3:
-			inc si
+			; Obtener tiempo de nivel
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov TiempoNivel3, ax
-		TOBS3: ;me lo dejo en el punto y coma
+
 			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
 			inc si
+			; Obtener tiempo obstaculos
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov tiempo3Obs, al
-		TPREM3:
+
 			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
 			inc si
+			; Obtener tiempo premio
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov tiempo3Premio, al
-		PTOBS3:
+
 			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
 			inc si
+			; Obtener puntos obstaculos
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov puntosObsN3, ax
-		PTPREM3:
+
 			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
 			inc si
+			; Obtener puntos premio
 			mCopiarInformacion bufferaux
 			ConvertirAscii bufferaux ;numero en ax
 			mov puntosPremiosN3, ax
-		CLCARRO3:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarPersonaje bufferaux
-			compararCadena bufferaux, cadrojo
-			je CLROJO3
-			compararCadena bufferaux, cadverde
-			je CLVERDE3
-			compararCadena bufferaux, cadazul
-			je CLAZUL3
-			compararCadena bufferaux, cadblanco
-			je CLBLANCO3
-			CLROJO3:
-				mov carrocl3, 4d
-				jmp PARALEVEL4
-			CLVERDE3:
-				mov carrocl3, 2d
-				jmp PARALEVEL4
-			CLAZUL3:
-				mov carrocl3, 1d
-				jmp PARALEVEL4
-			CLBLANCO3:
-				mov carrocl3, 15d
-	PARALEVEL4:
-		inc si ;nueva linea = caracter 10
-		inc si ;posible dolar o siguiente nivel
-		cmp bufferInformacion[si],'$' ;si no hay nivel 2
-		je FIN
-		limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-		Nivel4:
-			cmp bufferInformacion[si],';'
-			je NUMNIVEL4
-			inc si
-			jmp Nivel4
-		NUMNIVEL4:
-			inc si
-			cmp bufferInformacion[si],';'
-			je TN4
-			jmp NUMNIVEL4
-		TN4:
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov TiempoNivel4, ax
-		TOBS4: ;me lo dejo en el punto y coma
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov tiempo4Obs, al
-		TPREM4:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov tiempo4Premio, al
-		PTOBS4:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov puntosObsN4, ax
-		PTPREM4:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov puntosPremiosN4, ax
-		CLCARRO4:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarPersonaje bufferaux
-			compararCadena bufferaux, cadrojo
-			je CLROJO4
-			compararCadena bufferaux, cadverde
-			je CLVERDE4
-			compararCadena bufferaux, cadazul
-			je CLAZUL4
-			compararCadena bufferaux, cadblanco
-			je CLBLANCO4
-			CLROJO4:
-				mov carrocl4, 4d
-				jmp PARALEVEL5
-			CLVERDE4:
-				mov carrocl4, 2d
-				jmp PARALEVEL5
-			CLAZUL4:
-				mov carrocl4, 1d
-				jmp PARALEVEL5
-			CLBLANCO4:
-				mov carrocl4, 15d
-	PARALEVEL5:
-		inc si ;nueva linea = caracter 10
-		inc si ;posible dolar o siguiente nivel
-		cmp bufferInformacion[si],'$' ;si no hay nivel 2
-		je FIN
-		limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-		Nivel5:
-			cmp bufferInformacion[si],';'
-			je NUMNIVEL5
-			inc si
-			jmp Nivel5
-		NUMNIVEL5:
-			inc si
-			cmp bufferInformacion[si],';'
-			je TN5
-			jmp NUMNIVEL5
-		TN5:
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov TiempoNivel5, ax
-		TOBS5: ;me lo dejo en el punto y coma
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov tiempo5Obs, al
-		TPREM5:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov tiempo5Premio, al
-		PTOBS5:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov puntosObsN5, ax
-		PTPREM5:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov puntosPremiosN5, ax
-		CLCARRO5:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarPersonaje bufferaux
-			compararCadena bufferaux, cadrojo
-			je CLROJO5
-			compararCadena bufferaux, cadverde
-			je CLVERDE5
-			compararCadena bufferaux, cadazul
-			je CLAZUL5
-			compararCadena bufferaux, cadblanco
-			je CLBLANCO5
-			CLROJO5:
-				mov carrocl5, 4d
-				jmp PARALEVEL6
-			CLVERDE5:
-				mov carrocl5, 2d
-				jmp PARALEVEL6
-			CLAZUL5:
-				mov carrocl5, 1d
-				jmp PARALEVEL6
-			CLBLANCO5:
-				mov carrocl5, 15d
-	PARALEVEL6:
-		inc si ;nueva linea = caracter 10
-		inc si ;posible dolar o siguiente nivel
-		cmp bufferInformacion[si],'$' ;si no hay nivel 2
-		je FIN
-		limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-		Nivel6:
-			cmp bufferInformacion[si],';'
-			je NUMNIVEL6
-			inc si
-			jmp Nivel6
-		NUMNIVEL6:
-			inc si
-			cmp bufferInformacion[si],';'
-			je TN6
-			jmp NUMNIVEL6
-		TN6:
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov TiempoNivel6, ax
-		TOBS6: ;me lo dejo en el punto y coma
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov tiempo6Obs, al
-		TPREM6:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov tiempo6Premio, al
-		PTOBS6:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov puntosObsN6, ax
-		PTPREM6:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarInformacion bufferaux
-			ConvertirAscii bufferaux ;numero en ax
-			mov puntosPremiosN6, ax
-		CLCARRO6:
-			limpiarCadena bufferaux, SIZEOF bufferaux, 24h
-			inc si
-			mCopiarPersonaje bufferaux
-			compararCadena bufferaux, cadrojo
-			je CLROJO6
-			compararCadena bufferaux, cadverde
-			je CLVERDE6
-			compararCadena bufferaux, cadazul
-			je CLAZUL6
-			compararCadena bufferaux, cadblanco
-			je CLBLANCO6
-			CLROJO6:
-				mov carrocl6, 4d
-				jmp FIN
-			CLVERDE6:
-				mov carrocl6, 2d
-				jmp FIN
-			CLAZUL6:
-				mov carrocl6, 1d
-				jmp FIN
-			CLBLANCO6:
-				mov carrocl6, 15d
-	FIN:
-		ret
 
-almacenarConfiguracion endp
-
+		LEVEL_END:
+		_Print saltoln
+		mWrite <' | NIVEL: '>
+		_Print nombreNivel1
+		_Print saltoln
+		mWrite <' | NIVEL: '>
+		_Print nombreNivel2
+		_Print saltoln
+		mWrite <' | NIVEL: '>
+		_Print nombreNivel3
+		_Print saltoln
+	pop si
+	ret
+ConfiguracionNiveles endp
 
 ;======================= SESION DE ADMINISTRADOR ============================
 SesionAdministrador proc
