@@ -33,9 +33,7 @@ SINGUP proc
 
     ;Verificar tamaño del username
     _LengtUser inUser
-    ;cmp ax, 7h
-    ;jbe validarPassword            ; esta dentro del rango 1-7
-    ;jg singup_end                   ; es mayor
+    
     ;Validar usuario ingresado
 
     ;call VALIDATE_USER
