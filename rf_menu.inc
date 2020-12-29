@@ -32,21 +32,21 @@ SINGUP proc
     _ReadString inUser
 
     ;Verificar tamaño del username
-    _Lengt inUser
-    cmp ax, 7h
+    _LengtUser inUser
+    ;cmp ax, 7h
     ;jbe validarPassword            ; esta dentro del rango 1-7
-    jg singup_end                   ; es mayor
+    ;jg singup_end                   ; es mayor
     ;Validar usuario ingresado
 
-    call VALIDATE_USER
+    ;call VALIDATE_USER
     ; AL = status de la busqueda
     ; 00h - No existe
     ; 01h - Existe
 
-    cmp al, 00h
-    je validarPassword
-    cmp al, 01h
-    je singup_end
+    ;cmp al, 00h
+    ;je validarPassword
+    ;cmp al, 01h
+    ;je singup_error
 
     validarPassword:
         _ClrBuffer inPass
@@ -58,14 +58,15 @@ SINGUP proc
 
         ;Registrar usuario
 
-        jmp singup_end
+        ;Session de usuario
+        jmp SESSION_USER
 
     singup_error:
         _PrintF msg_log01
         _ReadChar
 
     singup_end:
-        ret
+        jmp MENU
 
 SINGUP endp
 
@@ -78,13 +79,15 @@ LOGIN proc
 
         ; Limpiar variable (inUser)
         _ClrBuffer inUser
+        ; Limpiamos variable (inPass)
+        _ClrBuffer inPass
+
         ; Imprimir texto
         _PrintF txt_inUser
         ;Leer cadena, (nombre de usuario)
         _ReadString inUser
 
-        ; Limpiamos variable (inPass)
-        _ClrBuffer inPass
+        
         ; Imprimir txto
         _PrintF txt_inPass
         ; Leer cadena, (Contraseña de usuario)
@@ -119,7 +122,8 @@ LOGIN proc
         jmp login_end
 
     login_end:
-        ret
+        
+        jmp MENU
 
 LOGIN endp
 
@@ -546,7 +550,7 @@ SESSION_USER proc
         jmp user_menu
 
     user_end:
-        ret
+        jmp MENU
 SESSION_USER endp
 
 ;==>  MENU DE ADMIN
@@ -575,5 +579,5 @@ SESSION_ADMIN proc
         jmp admin_menu
 
     admin_end:
-        ret
+        jmp MENU
 SESSION_ADMIN endp

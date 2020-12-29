@@ -51,7 +51,7 @@ _ReadString MACRO buffer
     xor si, si
     for:
         _ReadChar
-        cmp al, 0dh         ; Saldo de linea
+        cmp al, 0dh         ; Salto de linea
         je end
 
         mov buffer[si], al
@@ -170,12 +170,29 @@ ENDM
 ; Entrada: cadena
 ; Salida: AX = tamaño
 _Lengt MACRO buffer
-    push cx 
+LOCAL FOR, END
+    push si     ; Puntero de cadena
+    push cx     ; Almacena el resultado
+    ;push ax     ; Temporal
 
-    mov cx, SIZEOF buffer
-    mov ax, cx
+    xor ax, ax
+    xor si, si
+    xor cx, cx
 
-    pop cx
+    FOR: 
+        mov al, buffer[si]
+        cmp al, '$'
+        je END
+
+        inc cx
+        inc si 
+        jmp FOR
+
+    END: 
+        mov ax, cx
+
+        pop cx
+        pop si
 ENDM
 
 
@@ -183,4 +200,24 @@ _ModTxt MACRO
     mov ax, 0003h
     int 10h
     
+ENDM
+
+;==> Verificar tamaño usuario (lenght)
+
+_LenghtUser MACRO usuario
+LOCAL ERR, CONTINUE, END
+    _Lengt usuario 
+    cmp ax, 7d 
+    jg ERR 
+    jmp CONTINUE 
+
+    ERR: 
+        mov al, 0d 
+        jmp END 
+    
+    CONTINUE: 
+        mov al, 1d 
+
+    END: 
+         
 ENDM
