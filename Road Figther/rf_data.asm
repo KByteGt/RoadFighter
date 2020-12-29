@@ -20,7 +20,7 @@ menuinicial     db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10
 				db	' |%%%|                          |%%%|',13,10
 				db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10,'$'
 
-escoja          db 10,13,' | >Elija una opcion: ','$'
+escoja          db 10,13,' | > Elija una opcion: ','$'
 
 encabezado      db  ' UNIVERSIDAD DE SAN CARLOS DE GUATEMALA',13,10
 				db	' FACULTAD DE INGENIERIA',13.10
@@ -28,7 +28,7 @@ encabezado      db  ' UNIVERSIDAD DE SAN CARLOS DE GUATEMALA',13,10
 				db	' ARQUITECTURA DE COMPUTADORAS Y ENSAMBLADORES 1',13,10
 				db	' NOMBRE: JOSE DANIEL LOPEZ GONZALEZ',13,10
 				db	' CARNET: 201503836',13,10
-				db	' SECCION: A',13,10,' $'
+				db	' SECCION: A',13,10,'$'
 
 menuUser        db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10
 				db	' |%%%%%%%%%%%%%% MENU %%%%%%%%%%%%%%|',13,10
@@ -38,8 +38,7 @@ menuUser        db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10
 				db	' |%%%| 2- CARGAR JUEGO          |%%%|',13,10
 				db	' |%%%| 3- SALIR                 |%%%|',13,10
 				db	' |%%%|                          |%%%|',13,10
-				db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10
-				db	' | > presione un numero: $'
+				db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10,'$'
 
 menuAdmin       db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10
 				db	' |%%%%%%%%%%%%%% MENU %%%%%%%%%%%%%%|',13,10
@@ -49,8 +48,7 @@ menuAdmin       db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10
 				db	' |%%%| 2- TOP 10 TIEMPOs        |%%%|',13,10
 				db	' |%%%| 3- SALIR                 |%%%|',13,10
 				db	' |%%%|                          |%%%|',13,10
-				db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10
-				db	' | > presione un numero: $'
+				db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10,'$'
 
 ;================ MENSAJES PARA LA APLICACION =====================
 msjRegUser      db ' | > Ingresar nombre de usuario (7 max char): ','$' ;registrar usuario
@@ -299,19 +297,19 @@ nivelU dw 20 dup(0d) 				;nivel que llego el usuario# 1-20
 
 ;========================== PARA TOP 10 PUNTOS =========================
 ;PARA LA IMPRESION
-toptituloP db 9,9,9,9,'Top 10 Puntos','$'
-top1 db 0ah,0dh,'1.','$'
-top2 db 0ah,0dh,'2.','$'
-top3 db 0ah,0dh,'3.','$'
-top4 db 0ah,0dh,'4.','$'
-top5 db 0ah,0dh,'5.','$'
-top6 db 0ah,0dh,'6.','$'
-top7 db 0ah,0dh,'7.','$'
-top8 db 0ah,0dh,'8.','$'
-top9 db 0ah,0dh,'9.','$'
-top10 db 0ah,0dh,'10.','$'
-numeroaux db 7 dup('$'),'$'
-
+toptituloP  db 9,9,9,'.: Top 10 Puntos :.','$'
+top1        db 0ah,0dh,' 1.','$'
+top2        db 0ah,0dh,' 2.','$'
+top3        db 0ah,0dh,' 3.','$'
+top4        db 0ah,0dh,' 4.','$'
+top5        db 0ah,0dh,' 5.','$'
+top6        db 0ah,0dh,' 6.','$'
+top7        db 0ah,0dh,' 7.','$'
+top8        db 0ah,0dh,' 8.','$'
+top9        db 0ah,0dh,' 9.','$'
+top10       db 0ah,0dh,' 10.','$'
+numeroaux   db 7 dup('$'),'$'
+lineas      db 10,13,'----------------------------------------------------------------------------------',10,13,'$'
 ;PARA EL ORDENAMIENTO TOP
 usuarioaux dw 0d				;usuario auxiliar
 nivelaux dw 0d 					;nivel auxiliar
@@ -320,18 +318,18 @@ punteoaux dw 0d 				;punteo auxiliar
 
 
 ;==================== PARA GENERAR ARCHIVO PUNTOS.REP ==================
-rutapuntos db 'Road/Puntos.rep',00h
+rutapuntos db 'Puntos.rep',00h
 
 
 ;======================= PARA TOP 10 TIEMPO ============================
 ;PARA LA IMPRESION
-toptituloT db 9,9,9,9,'Top 10 Tiempo (Seg)','$'
+toptituloT db 9,9,9,9,'.: Top 10 Tiempo (Seg) :.','$'
 
 ;PARA EL ORDENAMIENTO TOP
 tiempoaux dw 0d 		;tiempo en segundos auxiliar
 
 ;=================== PARA GENERAR ARCHIVO TIEMPOS.REP ==================
-rutatiempos db 'Road/Tiempos.rep',00h
+rutatiempos db 'Tiempos.rep',00h
 
 
 ;======================================================= PARA LA GRAFICA DE BARRAS ===========================================================
@@ -350,9 +348,20 @@ colorBarra dw 20 dup(0d)			;arreglo que guarda el color de cada barra
 hzBarra dw 20 dup(0d)				;arreglo que guarda los hz de cada barra
 
 ;================================ MENU ORDENAMIENTOS ==========================
-msjMenuOrden db 9,9,'ORDENAMIENTOS',10,13,'1) Ordenamiento BubbleSort',10,13,'2) Ordenamiento QuickSort',10,13,'3) Ordenamiento ShellSort',10,13,'4) Salir de ordenamientos','$'
-msjvelocidad db 10,13,'INGRESE UNA VELOCIDAD (0-9): ','$'
-msjASDEC db 10,13,'Forma:',10,13,'1) Descendente',10,13,'2) Ascendente','$'
+msjMenuOrden    db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10
+				db	' |%%%%%%%%% ORDENAMIENTOS %%%%%%%%%%|',13,10
+				db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10
+				db	' |%%%|                          |%%%|',13,10
+				db	' |%%%| 1- ORD. BUBBLESORT       |%%%|',13,10
+				db	' |%%%| 2- ORD. QUICKSORT        |%%%|',13,10
+				db	' |%%%| 3- REGRESAR              |%%%|',13,10
+				db	' |%%%|                          |%%%|',13,10
+				db	' |%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%|',13,10,'$'
+msjvelocidad    db  10,13,' | > INGRESE UNA VELOCIDAD (0-9): ','$'
+msjASDEC        db  10,13,' |%%%| FORMA:',10,13
+                db        ' |%%%| 1) Descendente',10,13
+                db        ' |%%%| 2) Ascendente',10,13,'$'
+
 ;Memoria del menu
 tipoOrden db 0d 		;guarda el indicador del tipo de ordenamiento
 velocidad db '$','$' 	;guarda el nivel de velocidad de las graficas

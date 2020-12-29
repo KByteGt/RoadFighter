@@ -698,14 +698,15 @@ SesionUsuario proc
 			je NOCARGADO
 			mIniciarJuego
 			_ModoTexto ;para escribir en la pantalla normal
-			mWrite<'JUEGO TERMINADO!'>
 			_Print saltoln
-			mWrite <'Informacion de partida jugada guardada!'>
+			mWrite<' |%%%| END GAME :.'>
+			_Print saltoln
+			;mWrite <'Informacion de partida jugada guardada!'>
 			leerChar
 			jmp MenuUsuario
 			NOCARGADO:
 				_Print saltoln
-				mWrite<'No se ha cargado las configuraciones del juego.'>
+				;mWrite<'No se ha cargado las configuraciones del juego.'>
 				leerChar
 			jmp MenuUsuario
 		Cargar:
@@ -743,8 +744,8 @@ cargarJuego proc
 		leerFichero handlerentrada, bufferInformacion, SIZEOF bufferInformacion ;numero de bytes maximo a leer
 		cerrarFichero handlerentrada
 		mWrite<' ..'>
-		_Print saltoln
-		_Print bufferInformacion
+		;_Print saltoln
+		;_Print bufferInformacion
 		;call almacenarConfiguracion
 		call ConfiguracionNiveles
 		_Print saltoln
@@ -1044,6 +1045,7 @@ calcularPuntosDescendente endp
 
 
 mostrarTopPuntos proc
+	_Print lineas
 	_Print toptituloP
 	NO1:
 		_Print top1
@@ -1186,6 +1188,7 @@ mostrarTopPuntos proc
 		ConvertirString numeroaux
 		_Print numeroaux
 	FIN:
+		_Print lineas
 		ret
 
 mostrarTopPuntos endp
@@ -1633,6 +1636,7 @@ calcularTiempoDescendente endp
 
 
 mostarTopTiempo proc
+	_Print lineas
 	_Print toptituloT
 	NO1:
 		_Print top1
@@ -1775,6 +1779,7 @@ mostarTopTiempo proc
 		ConvertirString numeroaux
 		_Print numeroaux
 	FIN:
+		_Print lineas
 		ret
 
 mostarTopTiempo endp
@@ -2113,9 +2118,9 @@ menuOrden proc
 		je BSORT
 		cmp al,'2'
 		je QSORT
+		;cmp al,'3'
+		;je SSORT
 		cmp al,'3'
-		je SSORT
-		cmp al,'4'
 		je FIN
 		jmp MENUSORT
 		BSORT:
@@ -2136,7 +2141,7 @@ menuOrden proc
 			jmp GUVEL
 			ERVEL:
 				_Print saltoln
-				mWrite<'Error en velocidad, ingrese un numero entre 0 a 9 por favor.'>
+				mWrite<' | **ERROR: Ingrese un numero entre 0 a 9.'>
 				leerChar
 				jmp VELO
 			GUVEL:
