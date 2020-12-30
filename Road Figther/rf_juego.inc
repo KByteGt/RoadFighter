@@ -38,43 +38,43 @@ SetUp proc
 	;Pintar Bloque Premio1
 	mtolineal 21,115	;posicion inicial del bloque amarillo 
 	mov posPremio1, ax
-	mpintarBloque ax, Amarillo,Naranja
+	mpintarBloque ax, Amarillo,Amarillo
 
     ;Pintar Bloque Premio2
     mtolineal 21,190    ;posicion inicial del bloque amarillo 
     mov posPremio2, ax
-    mpintarBloque ax, Amarillo,Naranja
+    mpintarBloque ax, Amarillo,Amarillo
 
     ;Pintar Bloque Premio3
     mtolineal 21,65    ;posicion inicial del bloque amarillo 
     mov posPremio3, ax
-    mpintarBloque ax, Amarillo,Naranja
+    mpintarBloque ax, Amarillo,Amarillo
 
     ;Pintar Bloque Premio4
     mtolineal 21,240    ;posicion inicial del bloque amarillo 
     mov posPremio4, ax
-    mpintarBloque ax, Amarillo,Naranja
+    mpintarBloque ax, Amarillo,Amarillo
 
     ;PINTAR OBSTACULOS
     ;Pintar Bloque Obstaculo1
     mtolineal 21,140 ;posicion inicial del bloque amarillo 
     mov posObs1, ax
-    mpintarBloque ax, Verde,VerdeClaro
+    mpintarBloque ax, Verde,Verde
 
     ;Pintar Bloque Obstaculo2
     mtolineal 21,90    ;posicion inicial del bloque amarillo 
     mov posObs2, ax
-    mpintarBloque ax, Verde,VerdeClaro
+    mpintarBloque ax, Verde,Verde
 
     ;Pintar Bloque Obstaculo3
     mtolineal 21,215 ;posicion inicial del bloque amarillo 
     mov posObs3, ax
-    mpintarBloque ax, Verde,VerdeClaro
+    mpintarBloque ax, Verde,Verde
 
     ;Pintar Bloque Obstaculo4
     mtolineal 21,165    ;posicion inicial del bloque amarillo 
     mov posObs4, ax
-    mpintarBloque ax, Verde,VerdeClaro
+    mpintarBloque ax, Verde,Verde
 
 	FIN:
 		ret
@@ -959,22 +959,22 @@ ControlPremiosMultiplo proc
             je ESTAPREM4
             jmp FIN ;SE VA A VER LOS OBSTACULOS
             ESTAPREM1:
-                mAvanzarBloque posPremio1, Amarillo, Naranja        ;avanzamos 1px hacia abajo al bloque
+                mAvanzarBloque posPremio1, Amarillo, Amarillo        ;avanzamos 1px hacia abajo al bloque
                 mGestionarBloque posPremio1,21,115, premio1Listo     ;Reinicia al blque desde el inicio si salio el 13 cuadro
                 mGestionChoqueBloque posPremio1,21,115,premio1Listo,Amarillo
                 jmp VERPREM2
             ESTAPREM2:
-                mAvanzarBloque posPremio2, Amarillo, Naranja        ;avanzamos 1px hacia abajo al bloque
+                mAvanzarBloque posPremio2, Amarillo, Amarillo        ;avanzamos 1px hacia abajo al bloque
                 mGestionarBloque posPremio2,21,190, premio2Listo
                 mGestionChoqueBloque posPremio2,21,190,premio2Listo,Amarillo
                 jmp VERPREM3
             ESTAPREM3:
-                mAvanzarBloque posPremio3, Amarillo, Naranja        ;avanzamos 1px hacia abajo al bloque
+                mAvanzarBloque posPremio3, Amarillo, Amarillo        ;avanzamos 1px hacia abajo al bloque
                 mGestionarBloque posPremio3,21,65, premio3Listo
                 mGestionChoqueBloque posPremio3,21,65,premio3Listo,Amarillo
                 jmp VERPREM4
             ESTAPREM4:
-                mAvanzarBloque posPremio4, Amarillo, Naranja        ;avanzamos 1px hacia abajo al bloque
+                mAvanzarBloque posPremio4, Amarillo, Amarillo        ;avanzamos 1px hacia abajo al bloque
                 mGestionarBloque posPremio4,21,240, premio4Listo
                 mGestionChoqueBloque posPremio4,21,240,premio4Listo,Amarillo
                 jmp FIN ;SE VA A VER LOS OBSTACULOS                
@@ -1000,22 +1000,22 @@ ControlPremiosNomultiplo proc
             je ESTAPREM4
             jmp FIN ;SE VA A VER LOS OBSTACULOS
             ESTAPREM1:
-                mAvanzarBloque posPremio1, Amarillo, Naranja        ;avanzamos 1px hacia abajo al bloque
+                mAvanzarBloque posPremio1, Amarillo, Amarillo        ;avanzamos 1px hacia abajo al bloque
                 mGestionarBloque posPremio1,21,115, premio1Listo     ;Reinicia al blque desde el inicio si salio el 13 cuadro
                 mGestionChoqueBloque posPremio1,21,115,premio1Listo,Amarillo
                 jmp VERPREM2
             ESTAPREM2:
-                mAvanzarBloque posPremio2, Amarillo, Naranja        ;avanzamos 1px hacia abajo al bloque
+                mAvanzarBloque posPremio2, Amarillo, Amarillo        ;avanzamos 1px hacia abajo al bloque
                 mGestionarBloque posPremio2,21,190, premio2Listo
                 mGestionChoqueBloque posPremio2,21,190,premio2Listo,Amarillo
                 jmp VERPREM3
             ESTAPREM3:
-                mAvanzarBloque posPremio3, Amarillo, Naranja        ;avanzamos 1px hacia abajo al bloque
+                mAvanzarBloque posPremio3, Amarillo, Amarillo        ;avanzamos 1px hacia abajo al bloque
                 mGestionarBloque posPremio3,21,65, premio3Listo
                 mGestionChoqueBloque posPremio3,21,65,premio3Listo,Amarillo
                 jmp VERPREM4
             ESTAPREM4:
-                mAvanzarBloque posPremio4, Amarillo, Naranja        ;avanzamos 1px hacia abajo al bloque
+                mAvanzarBloque posPremio4, Amarillo, Amarillo        ;avanzamos 1px hacia abajo al bloque
                 mGestionarBloque posPremio4,21,240, premio4Listo
                 mGestionChoqueBloque posPremio4,21,240,premio4Listo,Amarillo
                 jmp FIN ;SE VA A VER LOS OBSTACULOS
@@ -1089,23 +1089,23 @@ ControlObsMultiplo proc
             cmp obs4Listo, 1d
             je ESTAOBS4 
             jmp FIN
-            ESTAOBS1:
-                mAvanzarBloque posObs1, Verde, VerdeClaro       ;avanzamos 1px hacia abajo al bloque
+            ESTAOBS1:  ; COLOR DE BLOQUES
+                mAvanzarBloque posObs1, Verde, Verde       ;avanzamos 1px hacia abajo al bloque
                 mGestionarBloque posObs1,21,140, obs1Listo       ;Reinicia al blque desde el inicio si salio el 13 cuadro
                 mGestionChoqueBloque posObs1,21,140,obs1Listo,Verde
                 jmp VEROBS2
             ESTAOBS2:
-                mAvanzarBloque posObs2, Verde, VerdeClaro        ;avanzamos 1px hacia abajo al bloque
+                mAvanzarBloque posObs2, Verde, Verde        ;avanzamos 1px hacia abajo al bloque
                 mGestionarBloque posObs2,21,90, obs2Listo
                 mGestionChoqueBloque posObs2,21,90,obs2Listo,Verde
                 jmp VEROBS3
             ESTAOBS3:
-                mAvanzarBloque posObs3, Verde, VerdeClaro        ;avanzamos 1px hacia abajo al bloque
+                mAvanzarBloque posObs3, Verde, Verde        ;avanzamos 1px hacia abajo al bloque
                 mGestionarBloque posObs3,21,215, obs3Listo
                 mGestionChoqueBloque posObs3,21,215,obs3Listo,Verde
                 jmp VEROBS4
             ESTAOBS4:
-                mAvanzarBloque posObs4, Verde, VerdeClaro        ;avanzamos 1px hacia abajo al bloque
+                mAvanzarBloque posObs4, Verde, Verde        ;avanzamos 1px hacia abajo al bloque
                 mGestionarBloque posObs4,21,165, obs4Listo
                 mGestionChoqueBloque posObs4,21,165,obs4Listo,Verde
                 jmp FIN
@@ -1131,22 +1131,22 @@ ControlObsNomultiplo proc
         je ESTAOBS4 
         jmp FIN
         ESTAOBS1:
-            mAvanzarBloque posObs1, Verde, VerdeClaro       ;avanzamos 1px hacia abajo al bloque
+            mAvanzarBloque posObs1, Verde, Verde       ;avanzamos 1px hacia abajo al bloque
             mGestionarBloque posObs1,21,140, obs1Listo       ;Reinicia al blque desde el inicio si salio el 13 cuadro
             mGestionChoqueBloque posObs1,21,140,obs1Listo,Verde
             jmp VEROBS2
         ESTAOBS2:
-            mAvanzarBloque posObs2, Verde, VerdeClaro        ;avanzamos 1px hacia abajo al bloque
+            mAvanzarBloque posObs2, Verde, Verde        ;avanzamos 1px hacia abajo al bloque
             mGestionarBloque posObs2,21,90, obs2Listo
             mGestionChoqueBloque posObs2,21,90,obs2Listo,Verde
             jmp VEROBS3
         ESTAOBS3:
-            mAvanzarBloque posObs3, Verde, VerdeClaro        ;avanzamos 1px hacia abajo al bloque
+            mAvanzarBloque posObs3, Verde, Verde        ;avanzamos 1px hacia abajo al bloque
             mGestionarBloque posObs3,21,215, obs3Listo
             mGestionChoqueBloque posObs3,21,215,obs3Listo,Verde
             jmp VEROBS4
         ESTAOBS4:
-            mAvanzarBloque posObs4, Verde, VerdeClaro        ;avanzamos 1px hacia abajo al bloque
+            mAvanzarBloque posObs4, Verde, Verde        ;avanzamos 1px hacia abajo al bloque
             mGestionarBloque posObs4,21,165, obs4Listo
             mGestionChoqueBloque posObs4,21,165,obs4Listo,Verde
             jmp FIN

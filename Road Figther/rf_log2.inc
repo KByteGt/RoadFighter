@@ -951,9 +951,9 @@ SesionAdministrador proc
 			_ModoTexto
 			mTop10Puntos
 			jmp MenuManager
-		TOPTIEMPO:
-			_ModoTexto
-			mTop10Tiempo
+		TOPTIEMPO:		;No disponible
+			;_ModoTexto
+			;mTop10Tiempo
 			jmp MenuManager
 		SalirMA:
 			ret
@@ -1045,7 +1045,9 @@ calcularPuntosDescendente endp
 
 
 mostrarTopPuntos proc
-	_Print lineas
+	_Print lineasA
+	_Print lineasB
+	_Print saltoln
 	_Print toptituloP
 	NO1:
 		_Print top1
@@ -1188,7 +1190,9 @@ mostrarTopPuntos proc
 		ConvertirString numeroaux
 		_Print numeroaux
 	FIN:
-		_Print lineas
+		_Print lineasB
+		_Print lineasA
+		_Print saltoln
 		ret
 
 mostrarTopPuntos endp

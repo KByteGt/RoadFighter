@@ -297,7 +297,7 @@ nivelU dw 20 dup(0d) 				;nivel que llego el usuario# 1-20
 
 ;========================== PARA TOP 10 PUNTOS =========================
 ;PARA LA IMPRESION
-toptituloP  db 9,9,9,'.: Top 10 Puntos :.','$'
+toptituloP  db 9,9,9,9,'.: TOP 10 PUNTOS :.','$'
 top1        db 0ah,0dh,' 1.','$'
 top2        db 0ah,0dh,' 2.','$'
 top3        db 0ah,0dh,' 3.','$'
@@ -309,7 +309,9 @@ top8        db 0ah,0dh,' 8.','$'
 top9        db 0ah,0dh,' 9.','$'
 top10       db 0ah,0dh,' 10.','$'
 numeroaux   db 7 dup('$'),'$'
-lineas      db 10,13,'----------------------------------------------------------------------------------',10,13,'$'
+lineas      db 10,13,'--------------------------------------------------------------------------------',10,13,'$'
+lineasA     db 10,13,'================================================================================','$'
+lineasB     db 10,13,'________________________________________________________________________________','$'
 ;PARA EL ORDENAMIENTO TOP
 usuarioaux dw 0d				;usuario auxiliar
 nivelaux dw 0d 					;nivel auxiliar

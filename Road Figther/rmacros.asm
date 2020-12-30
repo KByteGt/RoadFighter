@@ -338,7 +338,7 @@ abrirFichero macro buffer, handler
 		jmp Salir
 	ErrorAbrirFichero:
 		mov siabrio, 0d
-		mWrite <'Error al abrir el archivo'>
+		mWrite <' | **ERROR: Al abrir el archivo'>
 		_Print saltoln
 	Salir:
 
@@ -352,7 +352,7 @@ cerrarFichero macro handler
 	jc ErrorCerrarFichero
 	jnc Salir
 	ErrorCerrarFichero:
-		mWrite <'Error al cerrar el archivo'>
+		mWrite <' | **ERROR: Al cerrar el archivo'>
 		_Print saltoln
 	Salir:
 
@@ -368,7 +368,7 @@ leerFichero macro handler, buffer, numbytes
 	jc ErrorLeerFichero	;si ocurre error
 	jnc Salir
 	ErrorLeerFichero:
-		mWrite <'Error al leer el archivo'>
+		mWrite <' | **ERROR: Al leer el archivo'>
 		_Print saltoln
 	Salir:
 
@@ -386,7 +386,7 @@ crearFichero macro buffer, handler
 		mov handler,ax
 		jmp Salir
 	ErrorCrearFichero:
-		mWrite <'Error al crear el archivo'>
+		mWrite <' |** ERROR: Al crear el archivo'>
 	Salir:
 
 endm
@@ -401,7 +401,7 @@ escribirFichero macro handler, buffer, numbytes
 	jc ErrorEscribirFichero
 	jnc Salir
 	ErrorEscribirFichero:
-		mWrite <'Error al escribir el archivo'>
+		mWrite <' | **ERROR: Al escribir el archivo'>
 	Salir:
 		
 endm
