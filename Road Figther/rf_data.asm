@@ -57,50 +57,50 @@ msjU            db ' | > Usuario: ','$'
 msjC            db ' | > Contrasena: ','$'
 
 ;=============== VARIABLES PARA GUARDAR USUARIOS ==================
-entradaU db 7 dup('$'),'$'	;Entrada para el usuario
-entradaC db 4 dup('$'),'$'	;Entrada para la contraseña
-userAdmin db 'admin','$' 	;Nombre del usuario administrador
-contraAdmin db '1234','$'	;contraseña del usuario administrador
-usuario1 db 'kbgt$$$','$'	;Usuario #1
-contra1 db '1234','$' 	
-usuario2 db 7 dup('$'),'$'	;Usuario #2
-contra2 db 4 dup('$'),'$' 	
-usuario3 db 7 dup('$'),'$'	;Usuario #3
-contra3 db 4 dup('$'),'$' 	
-usuario4 db 7 dup('$'),'$'	;Usuario #4
-contra4 db 4 dup('$'),'$' 	
-usuario5 db 7 dup('$'),'$'	;Usuario #5
-contra5 db 4 dup('$'),'$' 	
-usuario6 db 7 dup('$'),'$'	;Usuario #6
-contra6 db 4 dup('$'),'$' 	
-usuario7 db 7 dup('$'),'$'	;Usuario #7
-contra7 db 4 dup('$'),'$' 	
-usuario8 db 7 dup('$'),'$'	;Usuario #8
-contra8 db 4 dup('$'),'$' 	
-usuario9 db 7 dup('$'),'$'	;Usuario #9
-contra9 db 4 dup('$'),'$' 	
-usuario10 db 7 dup('$'),'$'	;Usuario #10
-contra10 db 4 dup('$'),'$' 	
-usuario11 db 7 dup('$'),'$'	;Usuario #11
-contra11 db 4 dup('$'),'$' 	
-usuario12 db 7 dup('$'),'$'	;Usuario #12
-contra12 db 4 dup('$'),'$' 	
-usuario13 db 7 dup('$'),'$'	;Usuario #13
-contra13 db 4 dup('$'),'$' 	
-usuario14 db 7 dup('$'),'$'	;Usuario #14
-contra14 db 4 dup('$'),'$' 	
-usuario15 db 7 dup('$'),'$'	;Usuario #15
-contra15 db 4 dup('$'),'$' 	
-usuario16 db 7 dup('$'),'$'	;Usuario #16
-contra16 db 4 dup('$'),'$' 	
-usuario17 db 7 dup('$'),'$'	;Usuario #17
-contra17 db 4 dup('$'),'$' 	
-usuario18 db 7 dup('$'),'$'	;Usuario #18
-contra18 db 4 dup('$'),'$' 	
-usuario19 db 7 dup('$'),'$'	;Usuario #19
-contra19 db 4 dup('$'),'$' 	
-usuario20 db 7 dup('$'),'$'	;Usuario #20
-contra20 db 4 dup('$'),'$' 
+entradaU 		db 7 dup('$'),'$'	;Entrada para el usuario
+entradaC 		db 4 dup('$'),'$'	;Entrada para la contraseña
+userAdmin 		db 'admin','$' 	;Nombre del usuario administrador
+contraAdmin 	db '1234','$'	;contraseña del usuario administrador
+usuario1 		db 7 dup('$'),'$'	;Usuario #1
+contra1 		db 4 dup('$'),'$' 	
+usuario2 		db 7 dup('$'),'$'	;Usuario #2
+contra2 		db 4 dup('$'),'$' 	
+usuario3 		db 7 dup('$'),'$'	;Usuario #3
+contra3 		db 4 dup('$'),'$' 	
+usuario4 		db 7 dup('$'),'$'	;Usuario #4
+contra4 		db 4 dup('$'),'$' 	
+usuario5 		db 7 dup('$'),'$'	;Usuario #5
+contra5 		db 4 dup('$'),'$' 	
+usuario6 		db 7 dup('$'),'$'	;Usuario #6
+contra6 		db 4 dup('$'),'$' 	
+usuario7 		db 7 dup('$'),'$'	;Usuario #7
+contra7 		db 4 dup('$'),'$' 	
+usuario8 		db 7 dup('$'),'$'	;Usuario #8
+contra8 		db 4 dup('$'),'$' 	
+usuario9 		db 7 dup('$'),'$'	;Usuario #9
+contra9 		db 4 dup('$'),'$' 	
+usuario10 		db 7 dup('$'),'$'	;Usuario #10
+contra10 		db 4 dup('$'),'$' 	
+usuario11 		db 7 dup('$'),'$'	;Usuario #11
+contra11 		db 4 dup('$'),'$' 	
+usuario12 		db 7 dup('$'),'$'	;Usuario #12
+contra12 		db 4 dup('$'),'$' 	
+usuario13 		db 7 dup('$'),'$'	;Usuario #13
+contra13 		db 4 dup('$'),'$' 	
+usuario14 		db 7 dup('$'),'$'	;Usuario #14
+contra14 		db 4 dup('$'),'$' 	
+usuario15		db 7 dup('$'),'$'	;Usuario #15
+contra15 		db 4 dup('$'),'$' 	
+usuario16 		db 7 dup('$'),'$'	;Usuario #16
+contra16 		db 4 dup('$'),'$' 	
+usuario17 		db 7 dup('$'),'$'	;Usuario #17
+contra17 		db 4 dup('$'),'$' 	
+usuario18 		db 7 dup('$'),'$'	;Usuario #18
+contra18 		db 4 dup('$'),'$' 	
+usuario19 		db 7 dup('$'),'$'	;Usuario #19
+contra19 		db 4 dup('$'),'$' 	
+usuario20 		db 7 dup('$'),'$'	;Usuario #20
+contra20 		db 4 dup('$'),'$' 
 
 ;============================ INGRESAR USUARIO ============================
 usuarioLogueado db 7 dup('$'),'$'
@@ -261,9 +261,9 @@ puntosPremiosN6 dw 0d
 puntosObsN6 dw 0d
 
 ;=================== MEMORIA PARA EL COLOR DEL CARRO SEGUN NIVELES ======================
-colorCarro db 4d  	;guarda el color del Carro
+colorCarro db 4d  	
 ;--------------------- PARA NIVEL 1 ------------------------------
-carrocl1 db 4d 		;por defecto tendran el color Rojo 	
+carrocl1 db 4d 		;color Rojo 	
 ;--------------------- PARA NIVEL 2 ------------------------------
 carrocl2 db 4d
 ;--------------------- PARA NIVEL 3 ------------------------------
@@ -279,13 +279,16 @@ juegoCargado db 0d; indica si hay un juego cargado en la aplicacion 0/1 = no/si
 
 ;==================== PARA EL ARCHIVO DE ENTRADA =============================
 handlerentrada      dw ? ;no se le asigna un valor todavia
+handlerUsr 			dw ?
+handlerFile 		dw ?
 bufferentrada       db 50 dup('$') ;cadena para guardar la ruta del archivo de entrada
 bufferInformacion   db 220 dup('$') ;variable para guardar la informacion que leeremos del archivo de entrada
 bufferaux           db 10 dup('$') ;cadena auxiliar para guardar la informacion de entrada temporalmente
-cadrojo db 'rojo','$'
-cadazul db 'azul','$'
-cadverde db 'verde','$'
-cadblanco db 'blanco','$'
+bufferaux2          db 10 dup('$')
+fileUsr  			db 'usuarios.txt',00h
+fileComa  			db ',','$'
+fileFinLinea		db 59,10,13,'$'
+
 
 siabrio db 0d 	;indica si abrio correctamente el archivo o no 1/0
 
@@ -370,10 +373,9 @@ velocidad db '$','$' 	;guarda el nivel de velocidad de las graficas
 formaOrden db 0d 		;guarda la forma del ordenamiento
 
 ;MODO VIDEO
-titulobubble db 'BUBBLESORT','$'
-tituloquick db 'QUICKSORT','$'
-tituloshell db 'SHELLSORT','$'
-titulotiempo db 'TIEMPO:','$'
+titulobubble 	db 'BUBBLESORT','$'
+tituloquick 	db 'QUICKSORT','$'
+titulotiempo 	db 'TIEMPO:','$'
 titulovelocidad db 'VELOCIDAD:','$'
 
 ;CADENAS PARA IMPRIMIR EL TIEMPO DEL ORDENAMIENTO
@@ -402,8 +404,11 @@ pivote dw 0d
 primero dw 0d
 ultimo dw 0d
 
-;SHELLSORT
-saltoshell dw 0d
-iforshell dw 0d
-jshell dw 0d
-kshell dw 0d
+
+
+
+
+cadrojo db 'rojo','$'
+cadazul db 'azul','$'
+cadverde db 'verde','$'
+cadblanco db 'blanco','$'

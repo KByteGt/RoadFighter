@@ -1,0 +1,7 @@
+kbgt,12;
+user1,14;
+user2,34;
+user3,24;
+user4,14;
+user5,34;
+user6,44;

@@ -2729,8 +2729,7 @@ GestionOrdenamiento proc
 	je BSORT
 	cmp tipoOrden, 2d
 	je QSORT
-	cmp tipoOrden, 3d
-	je SSORT
+
 	BSORT:
 		cmp formaOrden, 1d
 		je BDESC
@@ -2753,14 +2752,6 @@ GestionOrdenamiento proc
 			dec bx
 			mQuickSortDesc 0, bx
 			jmp FIN
-	SSORT:
-		cmp formaOrden, 1d
-		je SDESC
-		SASC:
-			call ShellSortAsc
-			jmp FIN
-		SDESC:
-			call ShellSortDesc
 	FIN:
 		ret
 
@@ -3130,174 +3121,6 @@ QuickSortDesc proc
     	ret
 
 QuickSortDesc endp
-
-
-
-;SHELLSORT
-ShellSortAsc proc
-	;--------------------------------------------------------------------------------
-        ;   Recibe:      si = k  
-		;				 di = j                                     
-        ;                ax = auxiliar para calculos
-        ;				 bx = auxiliar para calculos                                                  
-        ;   Devuelve:    nada	                               
-        ;                                                                    
-        ;   Comentarios: Ordena Shell Ascendentemente las barras y grafica nuevamente.				                 
-        ;-----------------------------------------------------------------------------
-   	mov ax, numBarras
-   	mov bl, 2d
-   	div bl 										;divido dentro de 2, al = cociente, ah = residuo
-   	mov ah, 0d
-   	mov saltoshell,ax 							;salto = arreglo.length/2
-   	WHILEG:										;while(salto>0){
-   		cmp saltoshell, 0d
-   		jle FIN
-   		mov ax, saltoshell
-   		mov iforshell,ax
-   		CICLOFOR:								;for(i=salto;i<arreglo.length;i++){
-   			mov ax, numBarras
-   			cmp iforshell, ax 
-   			jge ACTSALTO 
-   			mov ax, iforshell
-   			sub ax, saltoshell 					
-   			mov jshell, ax 						;j = i - salto
-   			WHILE1: 							;while(j>=0){
-   				cmp jshell, 0d
-   				jl INCREFOR
-   				mov ax, jshell
-   				add ax, saltoshell			
-   				mov kshell, ax					;k = j + salto
-   				ETIF: 							;if(arreglo[j] <= arreglo[k]){
-   				mov ax, kshell
-   				mov bx, 2d
-   				mul bx 							;ajusto k en terminos del arreglo
-   				mov si, ax 						;si = k ajustado
-   				mov ax, jshell
-   				mul bx 							;ajusto j en terminos del arreglo
-   				mov di, ax 						;di = j ajustado
-   				mov ax, tamBarra[si]
-   				cmp tamBarra[di], ax 			
-   				jg ETELSE 						
-   				mov ax, 1d
-   				neg ax 
-   				mov jshell, ax 					;j = -1
-   				jmp WHILE1
-   				ETELSE: 						;} else { 
-   					mov ax, tamBarra[di]
-   					mov tamBarraAux, ax 		;auxiliar = arreglo[j]
-   					mov ax, tamBarra[si]
-   					mov tamBarra[di], ax 		;arreglo[j] = arreglo[k]
-   					mov ax, tamBarraAux
-   					mov tamBarra[si],ax 		;arreglo[k] = auxiliar
-   					mov ax, jshell
-   					sub ax,saltoshell 			
-   					mov jshell,ax 				;j = j-salto }
-   					;ACTUALIZAR GRAFICA
-   					_ModoVideo
-					call pintarEncabezadoBarras
-					PintarContorno Blanco
-					call ActualizarTiempoJuegoB
-					mConfigurarBarras
-					mPintarNumerosBarras
-					mGraficarBarras
-   			jmp WHILE1 							;}
-   			INCREFOR:
-   				inc iforshell
-   		jmp CICLOFOR 							;}
-   		ACTSALTO:
-   			mov ax, saltoshell
-   			mov bl, 2d
-   			div bl
-   			mov ah,0d
-   			mov saltoshell, ax  				;salto = salto/2
-   	jmp WHILEG									;}
-   	FIN:
-   		ret
-
-ShellSortAsc endp
-
-
-ShellSortDesc proc
-	;--------------------------------------------------------------------------------
-        ;   Recibe:      si = k  
-		;				 di = j                                     
-        ;                ax = auxiliar para calculos
-        ;				 bx = auxiliar para calculos                                                  
-        ;   Devuelve:    nada	                               
-        ;                                                                    
-        ;   Comentarios: Ordena Shell Ascendentemente las barras y grafica nuevamente.				                 
-        ;-----------------------------------------------------------------------------
-   	mov ax, numBarras
-   	mov bl, 2d
-   	div bl 										;divido dentro de 2, al = cociente, ah = residuo
-   	mov ah, 0d
-   	mov saltoshell,ax 							;salto = arreglo.length/2
-   	WHILEG:										;while(salto>0){
-   		cmp saltoshell, 0d
-   		jle FIN
-   		mov ax, saltoshell
-   		mov iforshell,ax
-   		CICLOFOR:								;for(i=salto;i<arreglo.length;i++){
-   			mov ax, numBarras
-   			cmp iforshell, ax 
-   			jge ACTSALTO 
-   			mov ax, iforshell
-   			sub ax, saltoshell 					
-   			mov jshell, ax 						;j = i - salto
-   			WHILE1: 							;while(j>=0){
-   				cmp jshell, 0d
-   				jl INCREFOR
-   				mov ax, jshell
-   				add ax, saltoshell			
-   				mov kshell, ax					;k = j + salto
-   				ETIF: 							;if(arreglo[j] >= arreglo[k]){
-   				mov ax, kshell
-   				mov bx, 2d
-   				mul bx 							;ajusto k en terminos del arreglo
-   				mov si, ax 						;si = k ajustado
-   				mov ax, jshell
-   				mul bx 							;ajusto j en terminos del arreglo
-   				mov di, ax 						;di = j ajustado
-   				mov ax, tamBarra[si]
-   				cmp tamBarra[di], ax 			
-   				jl ETELSE 						
-   				mov ax, 1d
-   				neg ax 
-   				mov jshell, ax 					;j = -1
-   				jmp WHILE1
-   				ETELSE: 						;} else { 
-   					mov ax, tamBarra[di]
-   					mov tamBarraAux, ax 		;auxiliar = arreglo[j]
-   					mov ax, tamBarra[si]
-   					mov tamBarra[di], ax 		;arreglo[j] = arreglo[k]
-   					mov ax, tamBarraAux
-   					mov tamBarra[si],ax 		;arreglo[k] = auxiliar
-   					mov ax, jshell
-   					sub ax,saltoshell 			
-   					mov jshell,ax 				;j = j-salto }
-   					;ACTUALIZAR GRAFICA
-   					_ModoVideo
-					call pintarEncabezadoBarras
-					PintarContorno Blanco
-					call ActualizarTiempoJuegoB
-					mConfigurarBarras
-					mPintarNumerosBarras
-					mGraficarBarras
-   			jmp WHILE1 							;}
-   			INCREFOR:
-   				inc iforshell
-   		jmp CICLOFOR 							;}
-   		ACTSALTO:
-   			mov ax, saltoshell
-   			mov bl, 2d
-   			div bl
-   			mov ah,0d
-   			mov saltoshell, ax  				;salto = salto/2
-   	jmp WHILEG									;}
-   	FIN:
-   		ret
-
-ShellSortDesc endp
 
 
 ;============================== PARA EL TIEMPO DEL ORDENAMIENTO =============================
@@ -4560,7 +4383,7 @@ pintarEncabezadoBarras proc
 		printVideo tituloquick
 		jmp TIEMPO
 	SSORT:
-		printVideo tituloshell
+		;printVideo tituloshell
 	TIEMPO:
 		mSetCursor 0,13
 		printVideo titulotiempo

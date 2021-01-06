@@ -1,3 +1,177 @@
+;======================= 
+;		Archivos 
+;=======================
+
+; =============================== ARCHIVO USUARIOS =================
+; Leer archivo rf_usr.txt
+; Estrucruta: User (7), Pass (4);
+ReadUsers PROC
+	abrirFichero fileUsr, handlerFile
+	cmp siabrio, 0d
+	je ERR_FILE
+	limpiarCadena bufferInformacion, SIZEOF bufferInformacion, 24h
+	leerFichero handlerFile, bufferInformacion, SIZEOF bufferInformacion ;numero de bytes maximo a leer
+	cerrarFichero handlerFile
+	_ModoTexto
+	_Print saltoln
+	_Print bufferInformacion
+	_Print saltoln
+	call InsertarUsr
+
+	jmp END_FILE
+	ERR_FILE:
+		mWrite <' |    ft_usr.txt'>
+
+	END_FILE:
+		
+	ret
+ReadUsers ENDP
+
+; Generar archivo rf_usr.txt
+WriteUsers PROC
+	crearFichero fileUsr, handlerUsr
+	call EscribirUsr
+	cerrarFichero handlerUsr
+	_Print saltoln
+	mWrite <'Archivo USUARIOS.TXT generado!'>
+	ret
+WriteUsers ENDP
+
+;Leer cada usuario e insrtar en el archivo
+InsertarUsr PROC
+	push si 
+	xor si, si 
+	; La información se almacena en: bufferInformacion[]
+	; Usuario 1
+	IU_LOOP:
+		cmp bufferInformacion[si], '$'
+		je USR_END
+		limpiarCadena entradaU, SIZEOF entradaU, '$'
+		mCopiarInformacion entradaU
+		inc si 
+		limpiarCadena entradaC, SIZEOF entradaC, '$'
+		mCopiarInformacion entradaC
+		inc si
+
+		mWrite <' Guardando usuario ...'>
+		_Print saltoln
+		call guardarUsuario
+		inc numBarras
+		
+		jmp IU_LOOP
+
+    USR_END:
+		mWrite<' - Fin de lectura...'>
+        leerChar
+	pop si
+	ret
+InsertarUsr ENDP
+
+; Guarda usuarios en archivo
+EscribirUsr PROC
+	cmp usuario1[0], '$'
+	je FIN_W
+	String_size usuario1
+	mov cx, ax
+	escribirFichero handlerUsr, usuario1, cx
+	escribirFichero handlerUsr, fileComa, 1d
+	escribirFichero handlerUsr, contra1, 4d
+	escribirFichero handlerUsr, fileFinLinea, 3d
+
+	cmp usuario2[0], '$'
+	je FIN_W
+	String_size usuario2
+	mov cx, ax
+	escribirFichero handlerUsr, usuario2, cx
+	escribirFichero handlerUsr, fileComa, 1d
+	escribirFichero handlerUsr, contra2, 4d
+	escribirFichero handlerUsr, fileFinLinea, 3d
+
+	cmp usuario3[0], '$'
+	je FIN_W
+	String_size usuario3
+	mov cx, ax
+	escribirFichero handlerUsr, usuario3, cx
+	escribirFichero handlerUsr, fileComa, 1d
+	escribirFichero handlerUsr, contra3, 4d
+	escribirFichero handlerUsr, fileFinLinea, 3d
+		
+	cmp usuario4[0], '$'
+	je FIN_W
+	String_size usuario4
+	mov cx, ax
+	escribirFichero handlerUsr, usuario4, cx
+	escribirFichero handlerUsr, fileComa, 1d
+	escribirFichero handlerUsr, contra4, 4d
+	escribirFichero handlerUsr, fileFinLinea, 3d
+
+	cmp usuario5[0], '$'
+	je FIN_W
+	String_size usuario5
+	mov cx, ax
+	escribirFichero handlerUsr, usuario5, cx
+	escribirFichero handlerUsr, fileComa, 1d
+	escribirFichero handlerUsr, contra5, 4d
+	escribirFichero handlerUsr, fileFinLinea, 3d
+
+	cmp usuario6[0], '$'
+	je FIN_W
+	String_size usuario6
+	mov cx, ax
+	escribirFichero handlerUsr, usuario6, cx
+	escribirFichero handlerUsr, fileComa, 1d
+	escribirFichero handlerUsr, contra6, 4d
+	escribirFichero handlerUsr, fileFinLinea, 3d
+
+	cmp usuario7[0], '$'
+	je FIN_W
+	String_size usuario7
+	mov cx, ax
+	escribirFichero handlerUsr, usuario7, cx
+	escribirFichero handlerUsr, fileComa, 1d
+	escribirFichero handlerUsr, contra7, 4d
+	escribirFichero handlerUsr, fileFinLinea, 3d
+
+	cmp usuario8[0], '$'
+	je FIN_W
+	String_size usuario8
+	mov cx, ax
+	escribirFichero handlerUsr, usuario8, cx
+	escribirFichero handlerUsr, fileComa, 1d
+	escribirFichero handlerUsr, contra8, 4d
+	escribirFichero handlerUsr, fileFinLinea, 3d
+
+	cmp usuario9[0], '$'
+	je FIN_W
+	String_size usuario9
+	mov cx, ax
+	escribirFichero handlerUsr, usuario9, cx
+	escribirFichero handlerUsr, fileComa, 1d
+	escribirFichero handlerUsr, contra9, 4d
+	escribirFichero handlerUsr, fileFinLinea, 3d
+
+	cmp usuario10[0], '$'
+	je FIN_W
+	String_size usuario10
+	mov cx, ax
+	escribirFichero handlerUsr, usuario10, cx
+	escribirFichero handlerUsr, fileComa, 1d
+	escribirFichero handlerUsr, contra10, 4d
+	escribirFichero handlerUsr, fileFinLinea, 3d
+
+	cmp usuario11[0], '$'
+	je FIN_W
+	String_size usuario11
+	mov cx, ax
+	escribirFichero handlerUsr, usuario11, cx
+	escribirFichero handlerUsr, fileComa, 1d
+	escribirFichero handlerUsr, contra11, 4d
+	escribirFichero handlerUsr, fileFinLinea, 3d
+	FIN_W:
+
+	ret
+EscribirUsr ENDP
+
 ;================================ REGISTRAR USUARIO ===================================
 registrarUsuario proc
 	_Print saltoln
@@ -313,8 +487,6 @@ copiarCadena proc
 	mov bl, byte ptr[di]
 	mov byte ptr[si], bl
 	inc si
-
-
 	inc di
 	jmp INICIOCC
 	FINALIZO:
@@ -333,11 +505,20 @@ copiarInformacion proc
 		je FIN
 		cmp bufferInformacion[si], 59d  ; ";"
 		je FIN
+		cmp bufferInformacion[si], 10d  ; ";"
+		je FIN2
+		cmp bufferInformacion[si], 13d  ; ";"
+		je FIN2
+		cmp bufferInformacion[si], '$'
+		je FIN
 		;Guardo caracter por caracter mov buffer,entrada
 		mov bl, bufferInformacion[si]
 		mov byte ptr[di], bl
 		inc si
 		inc di
+		jmp INICIOCI
+	FIN2:
+		inc si 
 		jmp INICIOCI
 	FIN:
 		ret
@@ -1804,7 +1985,7 @@ archivoTopTiempo endp
 
 
 EscribirTopTiempos proc
-	escribirFichero handlerentrada, toptituloT, 23d
+	escribirFichero handlerentrada, toptituloT, 26d
 	NO1:
 		escribirFichero handlerentrada, top1, 4d
 		escribirFichero handlerentrada, tab2, 2d
@@ -1995,7 +2176,7 @@ EscribirTopTiempos endp
 ;================================================= PARA INICIAR GRAFICA SOBRE PUNTOS ======================================
 
 iniciarBarrasPuntos proc
-	call almacenarPuntos 	;almacenamos los puntos en tamBarra[]
+	call almacenarPuntos ;almacenamos los puntos en tamBarra[]
 	mov ax, punteoU[0]
 	mov valorMaximo, ax 	;guardamos el punteo mayor para la referencia con las barras
 	mSetUpBarras

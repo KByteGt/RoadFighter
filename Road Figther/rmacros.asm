@@ -29,7 +29,9 @@ endm
 ;cerrarAplicacion
 _Exit macro
 	_Print saltoln
-	mWrite <' Vamos por el 100 !!!'>
+	_Print saltoln
+	mWrite <'  Vamos por el 100 !!!'>
+	_Print saltoln
 	mov ah,4ch ; numero de funcion para finalizar el programa
    	int 21h
 endm
@@ -82,6 +84,7 @@ endm
 limpiarCadena macro buffer, numbytes, caracter
 	LOCAL Repetir
 	push si
+	push cx
 	xor si,si
 	xor cx,cx
 	mov cx, numbytes
@@ -89,8 +92,8 @@ limpiarCadena macro buffer, numbytes, caracter
 		mov buffer[si], caracter
 		inc si
 	Loop Repetir
+	pop cx
 	pop si
-
 endm
 
 leerRuta macro buffer
@@ -290,9 +293,11 @@ endm
 
 
 mCopiarCadena macro buffer, entrada
+	push si
 	mov si, offset buffer
 	mov di, offset entrada
 	call copiarCadena
+	pop si
 endm
 
 ;============================ CARGAR EL JUEGO ================================
